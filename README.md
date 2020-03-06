@@ -1,10 +1,12 @@
+[![Build Status](https://travis-ci.com/suryaavala/probable-goggles.svg?branch=master)](https://travis-ci.com/suryaavala/probable-goggles)
+
 # probable-goggles
-A logical, reasonably standardized, but flexible project structure for doing and sharing data science work. 
+A logical, reasonably standardized, but flexible project structure for doing and sharing data science work. <br>
 Based On: 
  - [Cookie Cutter](https://github.com/drivendata/cookiecutter-data-science)
  - [Eliiza Cookie Cutter](https://gitlab.mantelgroup.com.au/eliiza/eliiza-cookiecutter-data-science)
 
-### Requirements to use the cookiecutter template:
+#### Install
 -----------
  - Python 2.7 or 3.5
  - [Cookiecutter Python package](http://cookiecutter.readthedocs.org/en/latest/installation.html) >= 1.4.0: This can be installed with pip by or conda depending on how you manage your Python packages:
@@ -27,7 +29,7 @@ $ conda install cookiecutter
 
 
 
-### The resulting directory structure
+#### The resulting directory structure
 ------------
 
 ```

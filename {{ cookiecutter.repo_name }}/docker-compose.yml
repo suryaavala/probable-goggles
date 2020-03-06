@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  notebook_workspace:
+    image: suryaavala/{{ cookiecutter.repo_name }}
+    container_name: "{{ cookiecutter.repo_name }}"
+    build:
+      context: .
+      dockerfile: Dockerfile-notebook-non-persisted
+    volumes:
+      - type: tmpfs
+        target: /app/notebooks
+      - type: bind
+        source: ./src
+        target: /app/src
+        read_only: true
+      - type: bind
+        source: ./data
+        target: /app/data
+        read_only: true
+    environment:
+      - ${AWS_ACCESS_KEY_ID}
+      - ${AWS_SECRET_ACCESS_KEY}
+      - ${AWS_SESSION_TOKEN}
+      - ${AWS_DEFAULT_REGION}
+  nginx:
+    image: nginx:latest
+    container_name: surya_nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - ${PORT}:80

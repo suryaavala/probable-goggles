@@ -1,0 +1,35 @@
+FROM ubuntu:18.04
+
+# Update Ubuntu and get wget, bzip2
+RUN apt-get update && \
+    apt-get install -y wget bzip2 tree && \
+    rm -rf /var/lib/apt/lists/*
+
+# Download and install Python Anaconda 3.7
+ARG ANACONDARELEASE=Anaconda2-2019.10-Linux-x86_64.sh
+RUN wget https://repo.continuum.io/archive/$ANACONDARELEASE && \
+    bash $ANACONDARELEASE -b -p anaconda && \
+    rm $ANACONDARELEASE && \
+    echo 'export PATH="/anaconda/bin:$PATH"' >> ~/.bashrc
+
+# Put Python Anaconda on PATH for subsequent steps
+ENV PATH /anaconda/bin:$PATH
+
+# Install python dependencies from local libraries and requirements.txt
+WORKDIR /app
+COPY src src
+COPY data data
+COPY notebooks notebooks
+COPY requirements.txt requirements.txt
+COPY setup.py setup.py
+RUN python3 -m pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Configuring customised changes for Jupyter
+RUN cp -r /app/notebooks/.jupyter /root
+
+# Jupyter listens port: 8888 (and must also be exposed to host with something like "-p 8888:8888")
+EXPOSE 8888
+
+# Run Jupyter notebook as Docker main process
+CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/app", "--ip='0.0.0.0'", "--port=8888", "--no-browser"]
